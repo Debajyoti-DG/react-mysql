@@ -38,104 +38,90 @@
 }
 
 
+/* App.css */
+
 body {
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f8f9fa;
+  background-color: #f4f6f8;
   margin: 0;
   padding: 0;
 }
 
 .container {
-  max-width: 700px;
-  margin: 40px auto;
+  max-width: 600px;
+  margin: auto;
+  padding: 40px 20px;
   background: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
 }
 
-h1, h2 {
+h1 {
   text-align: center;
-  color: #333;
+  margin-bottom: 30px;
+  color: #2c3e50;
 }
 
-.form {
+form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 30px;
 }
 
-.form input {
+input {
   padding: 10px;
+  border-radius: 8px;
   border: 1px solid #ccc;
-  border-radius: 6px;
   font-size: 16px;
 }
 
-.form button {
-  padding: 12px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: white;
+button {
+  padding: 10px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
-  transition: 0.3s ease;
 }
 
-.form button:hover {
-  background-color: #0056b3;
+form button {
+  background-color: #2980b9;
+  color: white;
 }
 
-.user-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+ul {
+  list-style: none;
+  padding: 0;
 }
 
 .user-card {
-  background: #f1f3f5;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
   padding: 15px;
-  border-radius: 6px;
+  margin-bottom: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
 }
 
-.user-card p {
-  margin: 0;
-  width: 60%;
-}
-
-.btn-group {
-  display: flex;
-  gap: 10px;
+.user-card div:first-child {
+  max-width: 65%;
 }
 
 .edit-btn {
-  background-color: #ffc107;
-  color: #fff;
+  margin-right: 10px;
+  background-color: #f1c40f;
+  color: white;
   border: none;
-  padding: 8px 14px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.edit-btn:hover {
-  background-color: #e0a800;
+  border-radius: 5px;
+  padding: 6px 10px;
 }
 
 .delete-btn {
-  background-color: #dc3545;
-  color: #fff;
+  background-color: #e74c3c;
+  color: white;
   border: none;
-  padding: 8px 14px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.delete-btn:hover {
-  background-color: #c82333;
+  border-radius: 5px;
+  padding: 6px 10px;
 }

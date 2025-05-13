@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './App.css'; // Import custom CSS
+import './App.css'; // Import CSS styles
+
+const API_BASE = 'http://localhost:3000/api/users'; // Change when deploying
 
 function App() {
   const [users, setUsers] = useState([]);
-  const [form, setForm] = useState({ name: '', email: '', age: '' });
-  const [editId, setEditId] = useState(null);
+  const [form, setForm] = useState({ name: '', email: '', age: '', id: null });
 
   const fetchUsers = async () => {
-    const res = await axios.get('http://localhost:5000/api/users');
+    const res = await axios.get(API_BASE);
     setUsers(res.data);
   };
 
@@ -16,74 +17,76 @@ function App() {
     fetchUsers();
   }, []);
 
-  const handleSubmit = async () => {
-    if (!form.name || !form.email || !form.age) {
-      alert('Please fill out all fields');
-      return;
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { name, email, age, id } = form;
 
-    if (editId) {
-      await axios.put(`http://localhost:5000/api/users/update/${editId}`, form);
+    if (!name || !email || !age) return;
+
+    const ageNumber = Number(age);
+    if (isNaN(ageNumber)) return;
+
+    const userData = { name, email, age: ageNumber };
+
+    if (id === null) {
+      await axios.post(API_BASE, userData);
     } else {
-      await axios.post('http://localhost:5000/api/users/add', form);
+      await axios.put(`${API_BASE}/${id}`, userData);
     }
 
-    setForm({ name: '', email: '', age: '' });
-    setEditId(null);
-    fetchUsers();
-  };
-
-  const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:5000/api/users/delete/${id}`);
+    setForm({ name: '', email: '', age: '', id: null });
     fetchUsers();
   };
 
   const handleEdit = (user) => {
-    setForm(user);
-    setEditId(user.id);
+    setForm({ ...user, age: String(user.age) });
+  };
+
+  const handleDelete = async (id) => {
+    await axios.delete(`${API_BASE}/${id}`);
+    fetchUsers();
   };
 
   return (
     <div className="container">
-      <h1>User Management</h1>
-      
-      <div className="form">
+      <h1>🌟 User Management System</h1>
+      <form onSubmit={handleSubmit}>
         <input
-          type="text"
-          placeholder="Name"
           value={form.name}
           onChange={e => setForm({ ...form, name: e.target.value })}
+          placeholder="Name"
+          required
         />
         <input
-          type="email"
-          placeholder="Email"
           value={form.email}
           onChange={e => setForm({ ...form, email: e.target.value })}
+          placeholder="Email"
+          required
         />
         <input
-          type="number"
-          placeholder="Age"
           value={form.age}
           onChange={e => setForm({ ...form, age: e.target.value })}
+          placeholder="Age"
+          required
         />
-        <button onClick={handleSubmit}>
-          {editId ? 'Update User' : 'Add User'}
-        </button>
-      </div>
+        <button type="submit">{form.id ? 'Update' : 'Add'} User</button>
+      </form>
 
-      <h2>Users List</h2>
-      <div className="user-list">
+      <ul>
         {users.map(user => (
-          <div key={user.id} className="user-card">
-            <p><strong>{user.name}</strong> ({user.age})</p>
-            <p>{user.email}</p>
-            <div className="btn-group">
+          <li key={user.id} className="user-card">
+            <div>
+              <strong>{user.name}</strong><br />
+              📧 {user.email}<br />
+              🎂 Age: {user.age}
+            </div>
+            <div>
               <button className="edit-btn" onClick={() => handleEdit(user)}>Edit</button>
               <button className="delete-btn" onClick={() => handleDelete(user.id)}>Delete</button>
             </div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
