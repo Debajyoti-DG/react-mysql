@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css'; // Import CSS styles
 
-const API_BASE = 'http://localhost:3000/api/users'; // Change when deploying
+const API_BASE = 'https://react-mysql-tv2b.onrender.com'; // Change when deploying
 
 function App() {
   const [users, setUsers] = useState([]);
