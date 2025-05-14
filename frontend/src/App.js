@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'; 
 import axios from 'axios';
 import './App.css'; // Import CSS styles
 
-const API_BASE = 'https://react-mysql-tv2b.onrender.com/api/users'; // Change when deploying
+const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
 function App() {
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState({ name: '', email: '', age: '', id: null });
 
   const fetchUsers = async () => {
-    const res = await axios.get(API_BASE);
-    setUsers(res.data);
+    try {
+      const res = await axios.get(`${API_BASE}/users`);
+      setUsers(res.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
   };
 
   useEffect(() => {
@@ -28,14 +32,17 @@ function App() {
 
     const userData = { name, email, age: ageNumber };
 
-    if (id === null) {
-      await axios.post(API_BASE, userData);
-    } else {
-      await axios.put(`${API_BASE}/${id}`, userData);
+    try {
+      if (id === null) {
+        await axios.post(`${API_BASE}/users`, userData);
+      } else {
+        await axios.put(`${API_BASE}/users/${id}`, userData);
+      }
+      setForm({ name: '', email: '', age: '', id: null });
+      fetchUsers();
+    } catch (error) {
+      console.error("Error saving user:", error);
     }
-
-    setForm({ name: '', email: '', age: '', id: null });
-    fetchUsers();
   };
 
   const handleEdit = (user) => {
@@ -43,8 +50,12 @@ function App() {
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`${API_BASE}/${id}`);
-    fetchUsers();
+    try {
+      await axios.delete(`${API_BASE}/users/${id}`);
+      fetchUsers();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
   };
 
   return (

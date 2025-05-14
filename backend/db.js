@@ -1,11 +1,12 @@
 const mysql = require('mysql');
+require('dotenv').config();  // Load environment variables from .env file
 
 const db = mysql.createConnection({
-  host: 'sql12.freesqldatabase.com',
-  user: 'sql12778689',
-  password: 'qAZv5lEmRu',
-  database: 'sql12778689',
-  port: 3306
+  host: process.env.DB_HOST,    // Use environment variable for host
+  user: process.env.DB_USER,    // Use environment variable for user
+  password: process.env.DB_PASSWORD,  // Use environment variable for password
+  database: process.env.DB_NAME,      // Use environment variable for database name
+  port: process.env.DB_PORT || 3306   // Use environment variable for port, default to 3306 if not provided
 });
 
 db.connect(err => {
@@ -14,3 +15,4 @@ db.connect(err => {
 });
 
 module.exports = db;
+
